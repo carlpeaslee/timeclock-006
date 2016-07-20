@@ -8,7 +8,7 @@ class ProjectSelector extends Component {
     allProjects: PropTypes.array.isRequired,
     createProject: PropTypes.func.isRequired,
     projectName: PropTypes.string,
-    activateProject: PropTypes.func.isRequired,
+    toggleProject: PropTypes.func.isRequired,
 
   };
   render() {
@@ -18,8 +18,8 @@ class ProjectSelector extends Component {
         projectName: projectName.value
       });
     };
-    const handleProjectActivate = (data) => {
-      this.props.activateProject({
+    const handleProjectToggle = (data) => {
+      this.props.toggleProject({
         projectId: data
       });
     };
@@ -27,10 +27,10 @@ class ProjectSelector extends Component {
       return (
         <h4
           key={project.projectId}
-          onClick={() => handleProjectActivate(project.projectId)}
         >
           <Label
             bsStyle={project.active ? 'info' : 'default'}
+            onClick={() => handleProjectToggle(project.projectId)}
           >
             {project.projectName}
           </Label>

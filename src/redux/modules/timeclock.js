@@ -5,7 +5,7 @@ const STOP_CLOCK = 'redux-example/timeclock/STOP_CLOCK';
 const PAUSE_CLOCK = 'redux-example/timeclock/PAUSE_CLOCK';
 
 const NEW_PROJECT = 'redux-example/timeclock/NEW_PROJECT';
-const ACTIVATE_PROJECT = 'redux-example/timeclock/ACTIVATE_PROJECT';
+const TOGGLE_PROJECT = 'redux-example/timeclock/TOGGLE_PROJECT';
 
 
 const INITIAL_STATE = {
@@ -20,7 +20,7 @@ export function projectReducer(projectState = [], action = {}) {
       const newAllProjectsState = projectState.concat(action.newProject);
       return newAllProjectsState;
     }
-    case ACTIVATE_PROJECT: {
+    case TOGGLE_PROJECT: {
       const index = projectState.findIndex(
         (project) => project.projectId === action.projectId
       );
@@ -64,7 +64,7 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
         allProjects: projectReducer(state.allProjects, action)
       };
     }
-    case ACTIVATE_PROJECT: {
+    case TOGGLE_PROJECT: {
       return {
         ...state,
         allProjects: projectReducer(state.allProjects, action)
@@ -107,9 +107,9 @@ export function createProject(data) {
   };
 }
 
-export function activateProject(data) {
+export function toggleProject(data) {
   return {
-    type: ACTIVATE_PROJECT,
+    type: TOGGLE_PROJECT,
     projectId: data.projectId
   };
 }
