@@ -14,6 +14,33 @@ const INITIAL_STATE = {
   currentProjects: []
 };
 
+export function projectReducer(projectState = [], action = {}) {
+  switch (action.type) {
+    case NEW_PROJECT: {
+      const newAllProjectsState = projectState.concat(action.newProject);
+      return newAllProjectsState;
+    }
+    case ACTIVATE_PROJECT: {
+      const index = projectState.findIndex(
+        (project) => project.projectId === action.projectId
+      );
+      const oldProject = projectState[index];
+      const newProject = {
+        ...oldProject,
+        active: !oldProject.active
+      };
+      const newAllProjectsState = [
+        ...projectState.slice(0, index),
+        newProject,
+        ...projectState.slice(index + 1, projectState.length)
+      ];
+      return newAllProjectsState;
+    }
+    default:
+      return projectState;
+  }
+}
+
 export default function reducer(state = INITIAL_STATE, action = {}) {
   switch (action.type) {
     case START_CLOCK:
@@ -34,25 +61,13 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
     case NEW_PROJECT: {
       return {
         ...state,
-        allProjects: state.allProjects.concat(action.newProject)
+        allProjects: projectReducer(state.allProjects, action)
       };
     }
     case ACTIVATE_PROJECT: {
-      const index = state.allProjects.findIndex(
-        (project) => project.projectId === action.projectId
-      );
-      const oldProject = state.allProjects[index];
-      const newProject = {
-        ...oldProject,
-        active: true
-      }
       return {
         ...state,
-        allProjects: [
-          ...state.allProjects.slice(0, index),
-          newProject,
-          ...state.allProjects.slice(index + 1, state.allProjects.length)
-        ]
+        allProjects: projectReducer(state.allProjects, action)
       };
     }
     default:
