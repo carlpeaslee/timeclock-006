@@ -38,14 +38,21 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
       };
     }
     case ACTIVATE_PROJECT: {
-      console.log(state);
-      console.log(action.projectId);
       const index = state.allProjects.findIndex(
         (project) => project.projectId === action.projectId
       );
-      console.log(index);
+      const oldProject = state.allProjects[index];
+      const newProject = {
+        ...oldProject,
+        active: true
+      }
       return {
-        ...state
+        ...state,
+        allProjects: [
+          ...state.allProjects.slice(0, index),
+          newProject,
+          ...state.allProjects.slice(index + 1, state.allProjects.length)
+        ]
       };
     }
     default:
