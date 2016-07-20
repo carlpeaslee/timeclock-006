@@ -7,7 +7,9 @@ class ProjectSelector extends Component {
   static propTypes = {
     allProjects: PropTypes.array.isRequired,
     createProject: PropTypes.func.isRequired,
-    projectName: PropTypes.string
+    projectName: PropTypes.string,
+    activateProject: PropTypes.func.isRequired,
+
   };
   render() {
     const handleNewProject = () => {
@@ -16,17 +18,16 @@ class ProjectSelector extends Component {
         projectName: projectName.value
       });
     };
-    // const handleProjectActivate = () => {
-    //   const projectName = ReactDOM.findDOMNode(this.refs.projectName);
-    //   this.props.createProject({
-    //     projectName: projectName.value
-    //   });
-    // };
+    const handleProjectActivate = (data) => {
+      this.props.activateProject({
+        projectId: data
+      });
+    };
     const allProjectList = this.props.allProjects.map((project) => {
       return (
         <h4
           key={project.projectId}
-          onClick={handleProjectActivate}
+          onClick={() => handleProjectActivate(project.projectId)}
         >
           <Label
             bsStyle={project.active ? 'info' : 'default'}

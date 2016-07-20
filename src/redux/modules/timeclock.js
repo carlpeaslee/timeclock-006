@@ -5,6 +5,8 @@ const STOP_CLOCK = 'redux-example/timeclock/STOP_CLOCK';
 const PAUSE_CLOCK = 'redux-example/timeclock/PAUSE_CLOCK';
 
 const NEW_PROJECT = 'redux-example/timeclock/NEW_PROJECT';
+const ACTIVATE_PROJECT = 'redux-example/timeclock/ACTIVATE_PROJECT';
+
 
 const INITIAL_STATE = {
   clockState: 'STOPPED',
@@ -33,6 +35,17 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
       return {
         ...state,
         allProjects: state.allProjects.concat(action.newProject)
+      };
+    }
+    case ACTIVATE_PROJECT: {
+      console.log(state);
+      console.log(action.projectId);
+      const index = state.allProjects.findIndex(
+        thing => thing.projectId === action.projectId
+      );
+      console.log(index);
+      return {
+        ...state
       };
     }
     default:
@@ -69,5 +82,12 @@ export function createProject(data) {
   return {
     type: NEW_PROJECT,
     newProject: newProject
+  };
+}
+
+export function activateProject(id) {
+  return {
+    type: ACTIVATE_PROJECT,
+    projectId: id
   };
 }

@@ -5,7 +5,7 @@ import {Row, Col} from 'react-bootstrap';
 import {TimerDisplay, CtrlButtons, ProjectSelector, TaskSelector} from '../TimeClock';
 
 
-const TCDash = ({startClock, stopClock, pauseClock, clockState, allProjects, createProject}) => (
+const TCDash = ({startClock, stopClock, pauseClock, clockState, allProjects, createProject, activateProject}) => (
   <Row>
     <Col md={3}>
       <TimerDisplay/>
@@ -22,6 +22,7 @@ const TCDash = ({startClock, stopClock, pauseClock, clockState, allProjects, cre
       <ProjectSelector
         allProjects={allProjects}
         createProject={createProject}
+        activateProject={activateProject}
       />
     </Col>
     <Col md={3}>
