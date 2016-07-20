@@ -41,7 +41,7 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
       console.log(state);
       console.log(action.projectId);
       const index = state.allProjects.findIndex(
-        thing => thing.projectId === action.projectId
+        (project) => project.projectId === action.projectId
       );
       console.log(index);
       return {
@@ -85,9 +85,9 @@ export function createProject(data) {
   };
 }
 
-export function activateProject(id) {
+export function activateProject(data) {
   return {
     type: ACTIVATE_PROJECT,
-    projectId: id
+    projectId: data.projectId
   };
 }
