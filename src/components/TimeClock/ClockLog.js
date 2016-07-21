@@ -12,13 +12,14 @@ class ClockLog extends Component {
         const activeProjectList = [];
         log.activeProjects.forEach(
           (project) => {
-            activeProjectList.push(project.projectName + " ");
+            activeProjectList.push(project.projectName + '');
           }
         );
         return (
           <tr
             key={log.logId}
           >
+            <td>{log.timerSessionId}</td>
             <td>{log.timeStamp}</td>
             <td>{log.action}</td>
             <td>{activeProjectList}</td>
@@ -31,6 +32,7 @@ class ClockLog extends Component {
       <Table striped bordered condensed hover>
         <thead>
           <tr>
+            <th>timerSessionId</th>
             <th>timeStamp</th>
             <th>action</th>
             <th>activeProjects</th>

@@ -1,15 +1,16 @@
 import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import {startClock, stopClock, pauseClock, createProject, toggleProject} from 'redux/modules/timeclock';
+import {startClock, stopClock, pauseClock, unpauseClock, createProject, toggleProject} from 'redux/modules/timeclock';
 import {TCDash, ClockLog} from 'components';
 
 
 class TimeClock extends Component {
   static propTypes = {
-    clockState: PropTypes.string.isRequired,
+    clockState: PropTypes.object.isRequired,
     startClock: PropTypes.func.isRequired,
     pauseClock: PropTypes.func.isRequired,
+    unpauseClock: PropTypes.func.isRequired,
     stopClock: PropTypes.func.isRequired,
     allProjects: PropTypes.array.isRequired,
     createProject: PropTypes.func.isRequired,
@@ -22,6 +23,7 @@ class TimeClock extends Component {
       clockState: props.clockState,
       startClock: props.startClock,
       pauseClock: props.pauseClock,
+      unpauseClock: props.unpauseClock,
       stopClock: props.stopClock,
       allProjects: props.allProjects,
       createProject: props.createProject,
@@ -42,6 +44,8 @@ class TimeClock extends Component {
           allProjects={this.props.allProjects}
           createProject={this.props.createProject}
           toggleProject={this.props.toggleProject}
+          unpauseClock={this.props.unpauseClock}
+          clockLog={this.props.clockLog}
         />
         <ClockLog
           clockLog={this.props.clockLog}
@@ -59,4 +63,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {startClock, stopClock, pauseClock, createProject, toggleProject})(TimeClock);
+export default connect(mapStateToProps, {startClock, stopClock, pauseClock, unpauseClock, createProject, toggleProject})(TimeClock);

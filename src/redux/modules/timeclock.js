@@ -3,13 +3,17 @@ import uuid from 'uuid';
 const START_CLOCK = 'redux-example/timeclock/START_CLOCK';
 const STOP_CLOCK = 'redux-example/timeclock/STOP_CLOCK';
 const PAUSE_CLOCK = 'redux-example/timeclock/PAUSE_CLOCK';
+const UNPAUSE_CLOCK = 'redux-example/timeclock/UNPAUSE_CLOCK';
 
 const NEW_PROJECT = 'redux-example/timeclock/NEW_PROJECT';
 const TOGGLE_PROJECT = 'redux-example/timeclock/TOGGLE_PROJECT';
 
 
 const INITIAL_STATE = {
-  clockState: 'STOPPED',
+  clockState: {
+    running: 'STOPPED',
+    timerSessionId: null
+  },
   allProjects: [],
   clockLog: []
 };
@@ -46,6 +50,7 @@ export function clockLogReducer(state = {}, action = {}) {
     case START_CLOCK:
     case STOP_CLOCK:
     case PAUSE_CLOCK:
+    case UNPAUSE_CLOCK:
     case TOGGLE_PROJECT:
     case NEW_PROJECT:
       const activeProjects = [];
@@ -57,6 +62,7 @@ export function clockLogReducer(state = {}, action = {}) {
         }
       );
       const newClockLogEntry = {
+        timerSessionId: action.timerSessionId,
         timeStamp: Date.now(),
         action: action.type,
         activeProjects: activeProjects,
@@ -70,24 +76,53 @@ export function clockLogReducer(state = {}, action = {}) {
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
   switch (action.type) {
-    case START_CLOCK:
+    case START_CLOCK: {
+      const newClockState = {
+        running: 'RUNNING',
+        timerSessionId: action.timerSessionId
+      };
       return {
         ...state,
-        clockState: 'RUNNING',
+        clockState: newClockState,
         clockLog: clockLogReducer(state, action)
       };
-    case STOP_CLOCK:
+    }
+    case STOP_CLOCK: {
+      action.timerSessionId = state.clockState.timerSessionId;
+      const newClockState = {
+        running: 'STOPPED',
+        timerSessionId: null
+      };
       return {
         ...state,
-        clockState: 'STOPPED',
+        clockState: newClockState,
         clockLog: clockLogReducer(state, action)
       };
-    case PAUSE_CLOCK:
+    }
+    case PAUSE_CLOCK: {
+      action.timerSessionId = state.clockState.timerSessionId;
+      const newClockState = {
+        running: 'PAUSED',
+        timerSessionId: action.timerSessionId
+      };
       return {
         ...state,
-        clockState: 'PAUSED',
+        clockState: newClockState,
         clockLog: clockLogReducer(state, action)
       };
+    }
+    case UNPAUSE_CLOCK: {
+      action.timerSessionId = state.clockState.timerSessionId;
+      const newClockState = {
+        running: 'RUNNING',
+        timerSessionId: action.timerSessionId
+      };
+      return {
+        ...state,
+        clockState: newClockState,
+        clockLog: clockLogReducer(state, action)
+      };
+    }
     case NEW_PROJECT: {
       const newAllProjects = projectReducer(state.allProjects, action);
       return {
@@ -100,6 +135,7 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
       };
     }
     case TOGGLE_PROJECT: {
+      action.timerSessionId = state.clockState.timerSessionId;
       const newAllProjects = projectReducer(state.allProjects, action);
       return {
         ...state,
@@ -117,7 +153,8 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
 
 export function startClock() {
   return {
-    type: START_CLOCK
+    type: START_CLOCK,
+    timerSessionId: uuid.v4()
   };
 }
 
@@ -131,6 +168,12 @@ export function stopClock() {
 export function pauseClock() {
   return {
     type: PAUSE_CLOCK
+  };
+}
+
+export function unpauseClock() {
+  return {
+    type: UNPAUSE_CLOCK
   };
 }
 
