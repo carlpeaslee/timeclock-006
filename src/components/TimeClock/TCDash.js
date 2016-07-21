@@ -7,15 +7,16 @@ const TCDash = ({startClock, stopClock, pauseClock, unpauseClock, clockState, al
     <Col md={3}>
       <TimerDisplay
         clockLog={clockLog}
+        clockState={clockState}
       />
     </Col>
     <Col md={3}>
       <CtrlButtons
-          startClock={startClock}
-          stopClock={stopClock}
-          clockState={clockState}
-          pauseClock={pauseClock}
-          unpauseClock={unpauseClock}
+        startClock={startClock}
+        stopClock={stopClock}
+        clockState={clockState}
+        pauseClock={pauseClock}
+        unpauseClock={unpauseClock}
       />
     </Col>
     <Col md={3}>
