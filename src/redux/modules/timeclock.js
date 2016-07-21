@@ -41,33 +41,73 @@ export function projectReducer(projectState = [], action = {}) {
   }
 }
 
+export function clockLogReducer(state = {}, action = {}) {
+  switch (action.type) {
+    case START_CLOCK:
+    case STOP_CLOCK:
+    case PAUSE_CLOCK:
+    case TOGGLE_PROJECT:
+    case NEW_PROJECT:
+      const activeProjects = [];
+      state.allProjects.forEach(
+        (project) => {
+          if (project.active === true) {
+            activeProjects.push(project);
+          }
+        }
+      );
+      const newClockLogEntry = {
+        timeStamp: Date.now(),
+        action: action.type,
+        activeProjects: activeProjects,
+        logId: uuid.v4()
+      };
+      return state.clockLog.concat(newClockLogEntry);
+    default:
+      return state;
+  }
+}
+
 export default function reducer(state = INITIAL_STATE, action = {}) {
   switch (action.type) {
     case START_CLOCK:
       return {
         ...state,
-        clockState: 'RUNNING'
+        clockState: 'RUNNING',
+        clockLog: clockLogReducer(state, action)
       };
     case STOP_CLOCK:
       return {
         ...state,
-        clockState: 'STOPPED'
+        clockState: 'STOPPED',
+        clockLog: clockLogReducer(state, action)
       };
     case PAUSE_CLOCK:
       return {
         ...state,
-        clockState: 'PAUSED'
+        clockState: 'PAUSED',
+        clockLog: clockLogReducer(state, action)
       };
     case NEW_PROJECT: {
+      const newAllProjects = projectReducer(state.allProjects, action);
       return {
         ...state,
-        allProjects: projectReducer(state.allProjects, action)
+        allProjects: newAllProjects,
+        clockLog: clockLogReducer({
+          ...state,
+          allProjects: newAllProjects
+        }, action)
       };
     }
     case TOGGLE_PROJECT: {
+      const newAllProjects = projectReducer(state.allProjects, action);
       return {
         ...state,
-        allProjects: projectReducer(state.allProjects, action)
+        allProjects: newAllProjects,
+        clockLog: clockLogReducer({
+          ...state,
+          allProjects: newAllProjects
+        }, action)
       };
     }
     default:
