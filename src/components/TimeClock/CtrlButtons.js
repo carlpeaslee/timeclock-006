@@ -31,9 +31,15 @@ class CtrlButtons extends Component {
               onClick={this.props.startClock}
             >Resume</Button>
             :
+            <span/>
+          }
+          {
+            this.props.clockState === 'RUNNING' ?
             <Button
               onClick={this.props.pauseClock}
             >Pause</Button>
+            :
+            <span/>
           }
       </div>
     );

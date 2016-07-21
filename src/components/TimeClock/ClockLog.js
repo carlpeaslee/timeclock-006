@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 
 
-const ClockLog = () => (
+class ClockLog extends Component {
+  static propTypes = {
+    clockLog: PropTypes.array.isRequired
+  };
+  render() {
+    return (
       <div>
-          <p>This is a clocklog</p>
+          <h2>This is a clockLog</h2>
       </div>
     );
+  }
+}
 
 export default ClockLog;

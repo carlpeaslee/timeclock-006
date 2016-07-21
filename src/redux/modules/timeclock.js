@@ -11,7 +11,7 @@ const TOGGLE_PROJECT = 'redux-example/timeclock/TOGGLE_PROJECT';
 const INITIAL_STATE = {
   clockState: 'STOPPED',
   allProjects: [],
-  currentProjects: []
+  clockLog: []
 };
 
 export function projectReducer(projectState = [], action = {}) {

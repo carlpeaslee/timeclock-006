@@ -1,9 +1,6 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
-
-
 import {TimerDisplay, CtrlButtons, ProjectSelector, TaskSelector} from '../TimeClock';
-
 
 const TCDash = ({startClock, stopClock, pauseClock, clockState, allProjects, createProject, toggleProject}) => (
   <Row>

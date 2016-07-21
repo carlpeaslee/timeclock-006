@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import {startClock, stopClock, pauseClock, createProject, toggleProject} from 'redux/modules/timeclock';
-import {TCDash} from 'components';
+import {TCDash, ClockLog} from 'components';
+
 
 class TimeClock extends Component {
   static propTypes = {
@@ -12,7 +13,8 @@ class TimeClock extends Component {
     stopClock: PropTypes.func.isRequired,
     allProjects: PropTypes.array.isRequired,
     createProject: PropTypes.func.isRequired,
-    toggleProject: PropTypes.func.isRequired
+    toggleProject: PropTypes.func.isRequired,
+    clockLog: PropTypes.array.isRequired
   };
   constructor(props) {
     super(props);
@@ -23,7 +25,8 @@ class TimeClock extends Component {
       stopClock: props.stopClock,
       allProjects: props.allProjects,
       createProject: props.createProject,
-      toggleProject: props.toggleProject
+      toggleProject: props.toggleProject,
+      clockLog: props.clockLog
     };
   }
   render() {
@@ -40,7 +43,10 @@ class TimeClock extends Component {
           createProject={this.props.createProject}
           toggleProject={this.props.toggleProject}
         />
-      </div>
+        <ClockLog
+          clockLog={this.props.clockLog}
+        />
+    </div>
     );
   }
 }
@@ -48,7 +54,8 @@ class TimeClock extends Component {
 function mapStateToProps(state) {
   return {
     clockState: state.timeclock.clockState,
-    allProjects: state.timeclock.allProjects
+    allProjects: state.timeclock.allProjects,
+    clockLog: state.timeclock.clockLog
   };
 }
 
